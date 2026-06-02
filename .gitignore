@@ -36,7 +36,7 @@ var/
 .ipynb_checkpoints/
 
 # Local data and model weights
-data/
+data/*
 !data/README.md
 models/*.pth
 models/*.pt

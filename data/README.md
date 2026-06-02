@@ -2,6 +2,7 @@
 
 Розпакуйте дані в папку `data/brain_mri` у такій структурі:
 
+```text
 data/
   brain_mri/
     Training/
@@ -14,6 +15,7 @@ data/
       meningioma/
       pituitary/
       no_tumor/
+```
 
 Назви папок використовуються як імена класів моделі:
 

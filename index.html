@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeuroScan AI | Діагностика пухлин мозку за МРТ</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Навігація">
+        <div class="brand">
+          <div class="brand-mark">NS</div>
+          <div>
+            <strong>NeuroScan AI</strong>
+            <span>МРТ-діагностика</span>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <a class="active" href="#diagnostics">Діагностика</a>
+          <a href="#results">Результати</a>
+          <a href="#history">Історія</a>
+        </nav>
+
+        <section class="side-panel">
+          <span class="panel-label">Модель</span>
+          <strong>ResNet18 MRI Classifier</strong>
+          <p>Навчальний прототип для попередньої оцінки МРТ-зображень.</p>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Програмна система діагностики пухлин мозку</p>
+            <h1>Аналіз МРТ-зображення за допомогою ШІ</h1>
+          </div>
+        </header>
+
+        <section id="diagnostics" class="diagnostics-layout">
+          <div class="scan-stage">
+            <div class="stage-toolbar">
+              <div>
+                <h2>МРТ-знімок</h2>
+                <p id="fileName">Завантажте файл для аналізу</p>
+              </div>
+              <div class="toolbar-actions">
+                <label class="icon-button primary" title="Завантажити МРТ">
+                  <input id="imageInput" type="file" accept="image/*" />
+                  <span>+</span>
+                </label>
+                <button id="analyzeButton" class="action-button" type="button">Аналізувати</button>
+              </div>
+            </div>
+
+            <div class="canvas-grid">
+              <figure class="scan-frame">
+                <canvas id="scanCanvas" width="520" height="520" aria-label="МРТ-зображення"></canvas>
+                <figcaption>Вхідне зображення</figcaption>
+              </figure>
+              <figure class="scan-frame">
+                <canvas id="heatmapCanvas" width="520" height="520" aria-label="Теплова карта"></canvas>
+                <figcaption>Карта уваги моделі</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <aside id="results" class="results-panel">
+            <div class="result-header">
+              <span class="panel-label">Поточний висновок</span>
+              <strong id="diagnosisLabel">Очікується аналіз</strong>
+              <span id="resultSource" class="source-tag">Джерело: невідомо</span>
+            </div>
+
+            <div class="risk-meter">
+              <div class="risk-copy">
+                <span>Ризик патології</span>
+                <strong id="riskValue">0%</strong>
+              </div>
+              <div class="meter-track">
+                <div id="riskBar" class="meter-fill"></div>
+              </div>
+            </div>
+
+            <div class="probabilities" aria-label="Ймовірності класів">
+              <div class="probability-row">
+                <span>Glioma</span>
+                <div><i id="gliomaBar"></i></div>
+                <strong id="gliomaValue">0%</strong>
+              </div>
+              <div class="probability-row">
+                <span>Meningioma</span>
+                <div><i id="meningiomaBar"></i></div>
+                <strong id="meningiomaValue">0%</strong>
+              </div>
+              <div class="probability-row">
+                <span>Pituitary</span>
+                <div><i id="pituitaryBar"></i></div>
+                <strong id="pituitaryValue">0%</strong>
+              </div>
+              <div class="probability-row">
+                <span>No tumor</span>
+                <div><i id="healthyBar"></i></div>
+                <strong id="healthyValue">0%</strong>
+              </div>
+            </div>
+
+            <dl class="metrics">
+              <div>
+                <dt>Контрастність</dt>
+                <dd id="contrastMetric">-</dd>
+              </div>
+              <div>
+                <dt>Асиметрія</dt>
+                <dd id="asymmetryMetric">-</dd>
+              </div>
+              <div>
+                <dt>Яскрава зона</dt>
+                <dd id="hotspotMetric">-</dd>
+              </div>
+            </dl>
+
+            <button id="reportButton" class="action-button wide" type="button">Експортувати висновок</button>
+          </aside>
+        </section>
+
+        <section id="history" class="history-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Журнал досліджень</p>
+              <h2>Останні аналізи</h2>
+            </div>
+            <div class="history-actions">
+              <button id="exportHistoryButton" class="text-button" type="button">Експортувати</button>
+              <button id="importHistoryButton" class="text-button" type="button">Імпортувати</button>
+              <button id="clearHistoryButton" class="text-button" type="button">Очистити</button>
+              <input id="importHistoryInput" type="file" accept="application/json" hidden />
+            </div>
+          </div>
+          <div id="historyList" class="history-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="src/app.js"></script>
+  </body>
+</html>

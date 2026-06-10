@@ -1,0 +1,305 @@
+{
+  "best_validation_accuracy": 0.9857142857142858,
+  "best_epoch": 20,
+  "final_test_accuracy": 0.940625,
+  "final_test_loss": 129.13680998321624,
+  "final_tta_test_accuracy": 0.943125,
+  "classes": [
+    "glioma",
+    "meningioma",
+    "no_tumor",
+    "pituitary"
+  ],
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.8330648370087147,
+      "train_accuracy": 0.6968253968253968,
+      "validation_loss": 849.931483427648,
+      "validation_accuracy": 0.8392857142857143,
+      "backbone_lr": 8.333333333333334e-06,
+      "classifier_lr": 8.333333333333333e-05
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.7121536040708186,
+      "train_accuracy": 0.7757936507936508,
+      "validation_loss": 254.72713874354957,
+      "validation_accuracy": 0.8821428571428571,
+      "backbone_lr": 1.6666666666666667e-05,
+      "classifier_lr": 0.00016666666666666666
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.6531303108684601,
+      "train_accuracy": 0.8136904761904762,
+      "validation_loss": 3316.008889194046,
+      "validation_accuracy": 0.9214285714285714,
+      "backbone_lr": 2.5e-05,
+      "classifier_lr": 0.00025
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.6071535541306412,
+      "train_accuracy": 0.8373015873015873,
+      "validation_loss": 3.628638813325337,
+      "validation_accuracy": 0.9071428571428571,
+      "backbone_lr": 2.5e-05,
+      "classifier_lr": 0.00025
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.5767765841550297,
+      "train_accuracy": 0.8517857142857143,
+      "validation_loss": 398.8496742634901,
+      "validation_accuracy": 0.9285714285714286,
+      "backbone_lr": 2.488294658163073e-05,
+      "classifier_lr": 0.0002488294658163073
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.5352237423615797,
+      "train_accuracy": 0.8688492063492064,
+      "validation_loss": 446.5752475782165,
+      "validation_accuracy": 0.95,
+      "backbone_lr": 2.4534169196566723e-05,
+      "classifier_lr": 0.0002453416919656672
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.4992698076461989,
+      "train_accuracy": 0.890079365079365,
+      "validation_loss": 507.23234130420855,
+      "validation_accuracy": 0.9553571428571429,
+      "backbone_lr": 2.3960767946576963e-05,
+      "classifier_lr": 0.00023960767946576962
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.5068913838929601,
+      "train_accuracy": 0.8926587301587302,
+      "validation_loss": 214.33697010363852,
+      "validation_accuracy": 0.9571428571428572,
+      "backbone_lr": 2.3174415627558586e-05,
+      "classifier_lr": 0.00023174415627558585
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.4578671497603258,
+      "train_accuracy": 0.9093253968253968,
+      "validation_loss": 202.35164356125253,
+      "validation_accuracy": 0.9607142857142857,
+      "backbone_lr": 2.2191120105073973e-05,
+      "classifier_lr": 0.00022191120105073973
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.4176536532621535,
+      "train_accuracy": 0.926984126984127,
+      "validation_loss": 123.80578959264926,
+      "validation_accuracy": 0.9660714285714286,
+      "backbone_lr": 2.103089844037078e-05,
+      "classifier_lr": 0.0002103089844037078
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.41874331716034147,
+      "train_accuracy": 0.9257936507936508,
+      "validation_loss": 327.4616120343762,
+      "validation_accuracy": 0.9696428571428571,
+      "backbone_lr": 1.9717369400739375e-05,
+      "classifier_lr": 0.00019717369400739374
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.41233866600290175,
+      "train_accuracy": 0.928968253968254,
+      "validation_loss": 44.10983022674918,
+      "validation_accuracy": 0.9714285714285714,
+      "backbone_lr": 1.8277272649521695e-05,
+      "classifier_lr": 0.00018277272649521695
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.4100319501663011,
+      "train_accuracy": 0.9382936507936508,
+      "validation_loss": 163.30211667290754,
+      "validation_accuracy": 0.9696428571428571,
+      "backbone_lr": 1.6739924403676442e-05,
+      "classifier_lr": 0.00016739924403676444
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.40678191008785414,
+      "train_accuracy": 0.9376984126984127,
+      "validation_loss": 186.48681507855653,
+      "validation_accuracy": 0.9803571428571428,
+      "backbone_lr": 1.5136620640142781e-05,
+      "classifier_lr": 0.00015136620640142782
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.3847849568913853,
+      "train_accuracy": 0.9402777777777778,
+      "validation_loss": 80.64611203936595,
+      "validation_accuracy": 0.9785714285714285,
+      "backbone_lr": 1.3500000000000001e-05,
+      "classifier_lr": 0.000135
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.382100548074832,
+      "train_accuracy": 0.9434523809523809,
+      "validation_loss": 10.44210556585874,
+      "validation_accuracy": 0.9767857142857143,
+      "backbone_lr": 1.1863379359857223e-05,
+      "classifier_lr": 0.00011863379359857222
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.38764722014939973,
+      "train_accuracy": 0.9444444444444444,
+      "validation_loss": 3.476712349376508,
+      "validation_accuracy": 0.9803571428571428,
+      "backbone_lr": 1.026007559632356e-05,
+      "classifier_lr": 0.00010260075596323559
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.3869220175795139,
+      "train_accuracy": 0.9468253968253968,
+      "validation_loss": 22.119215981555836,
+      "validation_accuracy": 0.9839285714285714,
+      "backbone_lr": 8.72272735047831e-06,
+      "classifier_lr": 8.722727350478308e-05
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.3670990562155133,
+      "train_accuracy": 0.9521825396825396,
+      "validation_loss": 38.60877456824694,
+      "validation_accuracy": 0.9839285714285714,
+      "backbone_lr": 7.282630599260633e-06,
+      "classifier_lr": 7.282630599260633e-05
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.3693984353353107,
+      "train_accuracy": 0.9531746031746032,
+      "validation_loss": 79.9291642232665,
+      "validation_accuracy": 0.9857142857142858,
+      "backbone_lr": 5.969101559629223e-06,
+      "classifier_lr": 5.9691015596292224e-05
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.3575987975630495,
+      "train_accuracy": 0.9547619047619048,
+      "validation_loss": 43.063822446124895,
+      "validation_accuracy": 0.9839285714285714,
+      "backbone_lr": 4.808879894926031e-06,
+      "classifier_lr": 4.808879894926031e-05
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.3717250603532034,
+      "train_accuracy": 0.9466269841269841,
+      "validation_loss": 16.76546551223312,
+      "validation_accuracy": 0.9857142857142858,
+      "backbone_lr": 3.825584372441415e-06,
+      "classifier_lr": 3.825584372441415e-05
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.36985651881448806,
+      "train_accuracy": 0.9511904761904761,
+      "validation_loss": 48.630621920951775,
+      "validation_accuracy": 0.9839285714285714,
+      "backbone_lr": 3.0392320534230385e-06,
+      "classifier_lr": 3.0392320534230383e-05
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.35239454536210923,
+      "train_accuracy": 0.9545634920634921,
+      "validation_loss": 55.285999197406426,
+      "validation_accuracy": 0.9857142857142858,
+      "backbone_lr": 2.465830803433282e-06,
+      "classifier_lr": 2.465830803433282e-05
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.37360173047535006,
+      "train_accuracy": 0.9496031746031746,
+      "validation_loss": 51.85804770556944,
+      "validation_accuracy": 0.9821428571428571,
+      "backbone_lr": 2.1170534183692744e-06,
+      "classifier_lr": 2.117053418369274e-05
+    }
+  ],
+  "classification_report": {
+    "glioma": {
+      "precision": 0.9911242603550295,
+      "recall": 0.8375,
+      "f1-score": 0.907859078590786,
+      "support": 400.0
+    },
+    "meningioma": {
+      "precision": 0.9166666666666666,
+      "recall": 0.9625,
+      "f1-score": 0.9390243902439024,
+      "support": 400.0
+    },
+    "no_tumor": {
+      "precision": 0.8871331828442438,
+      "recall": 0.9825,
+      "f1-score": 0.9323843416370107,
+      "support": 400.0
+    },
+    "pituitary": {
+      "precision": 0.9924812030075187,
+      "recall": 0.99,
+      "f1-score": 0.9912390488110138,
+      "support": 400.0
+    },
+    "accuracy": 0.943125,
+    "macro avg": {
+      "precision": 0.9468513282183646,
+      "recall": 0.943125,
+      "f1-score": 0.9426267148206782,
+      "support": 1600.0
+    },
+    "weighted avg": {
+      "precision": 0.9468513282183647,
+      "recall": 0.943125,
+      "f1-score": 0.9426267148206783,
+      "support": 1600.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      335,
+      25,
+      40,
+      0
+    ],
+    [
+      2,
+      385,
+      10,
+      3
+    ],
+    [
+      0,
+      7,
+      393,
+      0
+    ],
+    [
+      1,
+      3,
+      0,
+      396
+    ]
+  ]
+}

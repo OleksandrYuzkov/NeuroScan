@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+.venv/
+pip-wheel-metadata/
+pyenv.cfg
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+*.manifest
+*.spec
+
+# IDE
+.vscode/
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local data and model weights
+data/*
+!data/README.md
+models/*.pth
+models/*.pt
+!models/brain_tumor_resnet18.pt
+
+# Uploaded files - temporary user uploads
+uploads/
+
+# Reports with analysis results - false negatives
+reports/false_negatives/
+
+# OS files
+.DS_Store
+Thumbs.db

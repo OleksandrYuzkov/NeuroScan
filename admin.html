@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeuroScan AI | Адмін-панель</title>
+    <meta name="description" content="Адміністративна панель системи NeuroScan AI для управління користувачами, сканами та аудиту." />
+    <link rel="stylesheet" href="src/styles.css?v=2.0.1" />
+    <link rel="stylesheet" href="src/admin.css?v=2.0.1" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Навігація">
+        <div class="brand">
+          <div class="brand-mark">NS</div>
+          <div>
+            <strong>NeuroScan AI</strong>
+            <span>Адмін-панель</span>
+          </div>
+        </div>
+
+        <nav class="nav" id="adminNav">
+          <a class="active" href="#dashboard" data-section="dashboard">Dashboard</a>
+          <a href="#users" data-section="users">Користувачі</a>
+          <a href="#scans" data-section="scans">Скани</a>
+          <a href="#audit" data-section="audit">Аудит-лог</a>
+          <a href="#model" data-section="model">Модель</a>
+        </nav>
+
+        <div class="auth-section">
+          <div id="authUser" class="auth-user">
+            <div class="user-avatar" id="userAvatar">A</div>
+            <div class="user-info">
+              <strong id="userDisplayName">Admin</strong>
+              <span id="userEmail">admin@neuroscan.ai</span>
+            </div>
+            <button id="logoutBtn" class="text-button" type="button">Вийти</button>
+          </div>
+        </div>
+
+        <section class="side-panel">
+          <span class="panel-label">Система</span>
+          <strong>NeuroScan AI Admin</strong>
+          <p>Панель керування та моніторингу аналізів МРТ.</p>
+        </section>
+      </aside>
+
+      <main class="workspace" id="workspaceContent">
+        
+        <!-- Admin uses the main site's login flow; the embedded admin login card was removed -->
+
+        
+        <section id="sec-dashboard" class="admin-section">
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Огляд системи</p>
+              <h1>Dashboard</h1>
+            </div>
+          </header>
+
+          <div class="stat-cards" id="statCards">
+            <div class="stat-card">
+              <span class="stat-label">Користувачі</span>
+              <strong class="stat-value" id="statUsers">—</strong>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Активні</span>
+              <strong class="stat-value" id="statActive">—</strong>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Аналізів сьогодні</span>
+              <strong class="stat-value" id="statToday">—</strong>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Всього аналізів</span>
+              <strong class="stat-value" id="statTotal">—</strong>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="chart-panel">
+              <h2>Аналізи за останні дні</h2>
+              <canvas id="scansChart" width="600" height="260"></canvas>
+            </div>
+            <div class="chart-panel">
+              <h2>Розподіл діагнозів</h2>
+              <canvas id="diagChart" width="300" height="260"></canvas>
+              <div id="diagLegend" class="diag-legend"></div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <h2>Останні аналізи</h2>
+            <table class="data-table" id="recentScansTable">
+              <thead>
+                <tr>
+                  <th>Файл</th>
+                  <th>Діагноз</th>
+                  <th>Ризик</th>
+                  <th>Дата</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        
+        <section id="sec-users" class="admin-section" hidden>
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Управління</p>
+              <h1>Користувачі</h1>
+            </div>
+          </header>
+
+          <div class="filter-bar">
+            <input id="userSearch" type="text" placeholder="Пошук за email або ім'ям…" class="filter-input" />
+            <select id="userRoleFilter" class="filter-select">
+              <option value="">Всі ролі</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+            <select id="userStatusFilter" class="filter-select">
+              <option value="">Всі статуси</option>
+              <option value="true">Активні</option>
+              <option value="false">Деактивовані</option>
+            </select>
+          </div>
+
+          <div class="panel-card">
+            <table class="data-table" id="usersTable">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Ім'я</th>
+                  <th>Роль</th>
+                  <th>Статус</th>
+                  <th>Реєстрація</th>
+                  <th>Скани</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div id="usersPagination" class="pagination"></div>
+          </div>
+        </section>
+
+        
+        <section id="sec-scans" class="admin-section" hidden>
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Браузер результатів</p>
+              <h1>Скани</h1>
+            </div>
+          </header>
+
+          <div class="filter-bar">
+            <select id="scanLabelFilter" class="filter-select">
+              <option value="">Всі діагнози</option>
+              <option value="glioma">Glioma</option>
+              <option value="meningioma">Meningioma</option>
+              <option value="pituitary">Pituitary</option>
+              <option value="no_tumor">No tumor</option>
+            </select>
+          </div>
+
+          <div class="panel-card">
+            <table class="data-table" id="scansTable">
+              <thead>
+                <tr>
+                  <th>Файл</th>
+                  <th>Користувач</th>
+                  <th>Діагноз</th>
+                  <th>Ризик</th>
+                  <th>Модель</th>
+                  <th>Дата</th>
+                  <th>Дії</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div id="scansPagination" class="pagination"></div>
+          </div>
+        </section>
+
+        
+        <section id="sec-audit" class="admin-section" hidden>
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Журнал дій</p>
+              <h1>Аудит-лог</h1>
+            </div>
+          </header>
+
+          <div class="filter-bar">
+            <select id="auditActionFilter" class="filter-select">
+              <option value="">Всі дії</option>
+              <option value="login">Login</option>
+              <option value="register">Register</option>
+              <option value="predict">Predict</option>
+            </select>
+          </div>
+
+          <div class="panel-card">
+            <table class="data-table" id="auditTable">
+              <thead>
+                <tr>
+                  <th>Час</th>
+                  <th>Користувач</th>
+                  <th>Дія</th>
+                  <th>IP</th>
+                  <th>Деталі</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div id="auditPagination" class="pagination"></div>
+          </div>
+        </section>
+
+        
+        <section id="sec-model" class="admin-section" hidden>
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">ML конфігурація</p>
+              <h1>Інформація про модель</h1>
+            </div>
+          </header>
+
+          <div class="model-grid" id="modelInfoGrid">
+            <div class="panel-card">
+              <h2>Загальна інформація</h2>
+              <dl class="info-list" id="modelGeneralInfo"></dl>
+            </div>
+            <div class="panel-card">
+              <h2>Класи</h2>
+              <div id="modelClasses" class="model-classes"></div>
+            </div>
+            <div class="panel-card model-metrics-card">
+              <h2>Метрики</h2>
+              <div id="modelMetrics" class="model-metrics"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    
+    <div id="scanModal" class="modal-overlay" hidden>
+      <div class="modal-panel modal-wide">
+        <button id="scanModalClose" class="modal-close" type="button">&times;</button>
+        <h2 id="scanModalTitle">Деталі скану</h2>
+        <div id="scanModalContent" class="scan-detail-content"></div>
+      </div>
+    </div>
+
+    <script src="src/admin.js?v=2.0.1"></script>
+  </body>
+</html>

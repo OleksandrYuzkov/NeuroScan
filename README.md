@@ -1,138 +1,77 @@
-# NeuroScan — Система діагностики пухлин мозку
+# NeuroScan
 
-**Програмна система для автоматизованої діагностики пухлин головного мозку по МРТ-зображенням з використанням штучного інтелекту**
+A system for automated diagnosis of brain tumors based on MRI images using CNN neural networks (ResNet18).
 
-Система використовує глибокі згорткові нейромережі (CNN) для класифікації пухлин мозку на основі МРТ-скенів. Надає інтуїтивний вебінтерфейс, детальну інтерпретацію результатів через Grad-CAM та веб-сервіс з API для інтеграції.
+## Description
 
-## Можливості
+NeuroScan uses deep convolutional neural networks for brain tumor classification based on MRI scans. It provides a web interface with detailed interpretation of results through Grad-CAM and a REST API for integration.
 
-- Модель ResNet18 для класифікації пухлин
-- Класифікація в 4 категорії: Glioma, Meningioma, Pituitary, No Tumor
-- Інтерпретація результатів через Grad-CAM тепло-карти
-- Аутентифікація користувачів і управління профілем
-- Історія аналізів з експортом/імпортом даних
-- Адміністративна панель для управління користувачами
-- REST API для інтеграції з іншими системами
+## Features
 
-## Структура проекту
+- Classification of tumors into 4 categories: Glioma, Meningioma, Pituitary, No Tumor
+- Result interpretation through Grad-CAM (heat maps)
+- User authentication and profile management
+- Analysis history with export/import functionality
+- Administrative panel
+- REST API for integration
 
-```
-backend/
-├── main.py
-├── auth/
-├── routers/
-├── models/
-├── config.py
-└── database.py
+## Requirements
 
-ml/
-├── model.py
-├── train.py
-├── visualize.py
-└── utils.py
-
-src/
-├── app.js
-├── admin.js
-└── styles.css
-
-models/
-├── brain_tumor_resnet18.pt
-└── metrics.json
-
-data/brain_mri/
-├── Training/
-└── Testing/
-
-alembic/
-```
-
-## Швидкий старт
-
-### Передумови
 - Python 3.8+
-- CUDA (опційно для прискорення GPU)
+- pip/pipenv
 
-### Встановлення
+## Installation
 
-1. Клонуйте репозиторій і перейдіть до папки проекту
+1. Clone and navigate to the project folder:
    ```powershell
    cd NeuroScan
    ```
 
-2. Встановіть залежності
+2. Install dependencies:
    ```powershell
    pip install -r requirements.txt
    ```
 
-3. Запустіть бекенд-сервер
+## Running
+
+1. Start the backend server:
    ```powershell
    python run_backend.py
    ```
-   Сервер буде доступний за адресою `http://localhost:8000`
+   Server will be available at `http://localhost:8000`
 
-4. Встановіть пароль першого адміна (у другому терміналі):
+2. Set the first admin password (in a new terminal):
    ```powershell
-   python backend/scripts/set_admin_password.py admin@neuroscan.ai "вашпароль" --admin
+   python backend/scripts/set_admin_password.py admin@neuroscan.ai "your_password" --admin
    ```
 
+3. Open your browser at `http://localhost:8000`
 
+## Project Structure
 
-## Як користуватися
-
-### Для звичайних користувачів
-1. Реєстрація/Вхід
-2. Завантаження МРТ-зображення (PNG/JPG)
-3. Натискання кнопки "Аналізувати"
-4. Перегляд результатів з Grad-CAM тепло-картою
-5. Збереження в історії з можливістю експорту/імпорту
-
-### Для адміністраторів
-
-Адмін-панель дозволяє:
-   - Управління користувачами (активація, деактивація, зміна ролей)
-   - Перегляд всіх сканів та їх деталей
-   - Аудит-лог дій користувачів
-   - Інформація про модель та її метрики
-
-## CLI утиліти
-
-Локальний інференс:
-```powershell
-python backend/infer_image.py --image path/to/image.jpg
+```
+backend/          — FastAPI server
+ml/               — model utilities
+src/              — frontend interface
+models/           — saved model weights
+data/             — MRI images for training
+alembic/          — database migrations
 ```
 
-## Про модель
+## Usage
 
-ResNet18: точність ~95.6%, 11.2M параметрів
+1. Register/Login to the system
+2. Upload an MRI image (PNG/JPG)
+3. Analyze the image using the model
+4. View results with Grad-CAM heat map
+5. Save to history
 
-## Технологічний стек
+## Tech Stack
 
-**Backend:** FastAPI, SQLAlchemy, Alembic, PyJWT
+- **Backend:** FastAPI, SQLAlchemy, Alembic, PyJWT
+- **ML:** PyTorch, TorchVision, Grad-CAM
+- **Frontend:** HTML5, CSS3, JavaScript
 
-**ML & Data:** PyTorch, TorchVision, Scikit-learn, Grad-CAM
+## License
 
-**Frontend:** HTML5, CSS3, JavaScript, LocalStorage
-
-## Конфігурація
-
-Основні параметри в `backend/config.py`:
-- `DATABASE_URL` — рядок підключення до БД
-- `SECRET_KEY` — ключ для підписання JWT токенів
-- `UPLOAD_DIR` — папка для завантажених файлів
-- `MODEL_PATH` — шлях до моделі за замовчуванням
-
-## Безпека
-
-- JWT-токени для аутентифікації
-- Хешування паролів (bcrypt)
-- CORS налаштування
-- Логування дій користувачів
-
-## Ліцензія
-
-Проєкт розроблений в освітніх цілях.
-
-## Підтримка
-
-Для звітів про помилки та пропозицій створюйте issues у репозиторії.
+Educational project.

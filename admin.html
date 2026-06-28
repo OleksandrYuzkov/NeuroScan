@@ -1,35 +1,35 @@
 <!doctype html>
-<html lang="en">
+<html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NeuroScan AI | Admin Panel</title>
-    <meta name="description" content="Administrative panel of NeuroScan AI system for user management, scans and audit." />
+    <title>NeuroScan AI | Панель адміністратора</title>
+    <meta name="description" content="Адміністративна панель NeuroScan AI для керування користувачами, сканами та аудитом." />
     <link rel="stylesheet" href="src/styles.css?v=2.0.1" />
     <link rel="stylesheet" href="src/admin.css?v=2.0.1" />
   </head>
-  <body>
+  <body data-page-title="page_title_admin" data-page-description="page_description_admin">
     <div class="app-shell">
-      <aside class="sidebar" aria-label="Навігація">
+      <aside class="sidebar" aria-label="Навігація" data-i18n-aria-label="navigation">
         <div class="brand">
           <div class="brand-mark">NS</div>
           <div>
             <strong>NeuroScan AI</strong>
-            <span>Admin Panel</span>
+            <span data-i18n="admin_panel">Панель адміністратора</span>
           </div>
         </div>
 
         <nav class="nav" id="adminNav">
-          <a class="active" href="#dashboard" data-section="dashboard">Dashboard</a>
-          <a href="#users" data-section="users">Users</a>
-          <a href="#scans" data-section="scans">Scans</a>
-          <a href="#audit" data-section="audit">Audit Log</a>
-          <a href="#model" data-section="model">Model</a>
+          <a class="active" href="#dashboard" data-section="dashboard" data-i18n="dashboard">Панель огляду</a>
+          <a href="#users" data-section="users" data-i18n="users">Користувачі</a>
+          <a href="#scans" data-section="scans" data-i18n="scans">Скани</a>
+          <a href="#audit" data-section="audit" data-i18n="audit_log">Аудит-лог</a>
+          <a href="#model" data-section="model" data-i18n="model">Модель</a>
         </nav>
 
         <div class="language-switcher">
-          <button class="text-button" onclick="setLanguage('en')" id="lang-en">EN</button>
-          <button class="text-button" onclick="setLanguage('uk')" id="lang-uk">UK</button>
+          <button class="text-button" onclick="setLanguage('en')" id="lang-en" data-language="en" type="button">EN</button>
+          <button class="text-button" onclick="setLanguage('uk')" id="lang-uk" data-language="uk" type="button">UK</button>
         </div>
 
         <div class="auth-section">
@@ -39,70 +39,66 @@
               <strong id="userDisplayName">Admin</strong>
               <span id="userEmail">admin@neuroscan.ai</span>
             </div>
-            <button id="logoutBtn" class="text-button" type="button">Logout</button>
+            <button id="logoutBtn" class="text-button" type="button" data-i18n="logout">Вийти</button>
           </div>
         </div>
 
         <section class="side-panel">
-          <span class="panel-label">System</span>
+          <span class="panel-label" data-i18n="system">Система</span>
           <strong>NeuroScan AI Admin</strong>
-          <p>Management and monitoring panel for MRI analysis.</p>
+          <p data-i18n="management_panel">Панель керування та моніторингу аналізу МРТ.</p>
         </section>
       </aside>
 
       <main class="workspace" id="workspaceContent">
-        
-        <!-- Admin uses the main site's login flow; the embedded admin login card was removed -->
-
-        
         <section id="sec-dashboard" class="admin-section">
           <header class="topbar">
             <div>
-              <p class="eyebrow">Огляд системи</p>
-              <h1>Dashboard</h1>
+              <p class="eyebrow" data-i18n="system_overview">Огляд системи</p>
+              <h1 data-i18n="dashboard">Панель огляду</h1>
             </div>
           </header>
 
           <div class="stat-cards" id="statCards">
             <div class="stat-card">
-              <span class="stat-label">Користувачі</span>
-              <strong class="stat-value" id="statUsers">—</strong>
+              <span class="stat-label" data-i18n="users">Користувачі</span>
+              <strong class="stat-value" id="statUsers">-</strong>
             </div>
             <div class="stat-card">
-              <span class="stat-label">Активні</span>
-              <strong class="stat-value" id="statActive">—</strong>
+              <span class="stat-label" data-i18n="active_users">Активні</span>
+              <strong class="stat-value" id="statActive">-</strong>
             </div>
             <div class="stat-card">
-              <span class="stat-label">Аналізів сьогодні</span>
-              <strong class="stat-value" id="statToday">—</strong>
+              <span class="stat-label" data-i18n="scans_today">Аналізів сьогодні</span>
+              <strong class="stat-value" id="statToday">-</strong>
             </div>
             <div class="stat-card">
-              <span class="stat-label">Всього аналізів</span>
-              <strong class="stat-value" id="statTotal">—</strong>
+              <span class="stat-label" data-i18n="total_scans">Всього аналізів</span>
+              <strong class="stat-value" id="statTotal">-</strong>
             </div>
           </div>
 
           <div class="dashboard-grid">
             <div class="chart-panel">
-              <h2>Аналізи за останні дні</h2>
+              <h2 data-i18n="scans_recent_days">Аналізи за останні дні</h2>
               <canvas id="scansChart" width="600" height="260"></canvas>
             </div>
             <div class="chart-panel">
-              <h2>Розподіл діагнозів</h2>
+              <h2 data-i18n="diagnosis_distribution">Розподіл діагнозів</h2>
               <canvas id="diagChart" width="300" height="260"></canvas>
               <div id="diagLegend" class="diag-legend"></div>
             </div>
           </div>
 
           <div class="panel-card">
-            <h2>Останні аналізи</h2>
+            <h2 data-i18n="recent_analyses">Останні аналізи</h2>
             <table class="data-table" id="recentScansTable">
               <thead>
                 <tr>
-                  <th>Файл</th>
-                  <th>Діагноз</th>
-                  <th>Ризик</th>
-                  <th>Дата</th>
+                  <th data-i18n="file">Файл</th>
+                  <th data-i18n="diagnosis">Діагноз</th>
+                  <th data-i18n="risk">Ризик</th>
+                  <th data-i18n="date">Дата</th>
                 </tr>
               </thead>
               <tbody></tbody>
@@ -110,26 +106,25 @@
           </div>
         </section>
 
-        
         <section id="sec-users" class="admin-section" hidden>
           <header class="topbar">
             <div>
-              <p class="eyebrow">Управління</p>
-              <h1>Користувачі</h1>
+              <p class="eyebrow" data-i18n="management">Управління</p>
+              <h1 data-i18n="users">Користувачі</h1>
             </div>
           </header>
 
           <div class="filter-bar">
-            <input id="userSearch" type="text" placeholder="Пошук за email або ім'ям…" class="filter-input" />
+            <input id="userSearch" type="text" placeholder="Пошук за email або ім'ям..." data-i18n-placeholder="search_user" class="filter-input" />
             <select id="userRoleFilter" class="filter-select">
-              <option value="">Всі ролі</option>
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
+              <option value="" data-i18n="all_roles">Всі ролі</option>
+              <option value="user" data-i18n="role_user">Користувач</option>
+              <option value="admin" data-i18n="role_admin">Адміністратор</option>
             </select>
             <select id="userStatusFilter" class="filter-select">
-              <option value="">Всі статуси</option>
-              <option value="true">Активні</option>
-              <option value="false">Деактивовані</option>
+              <option value="" data-i18n="all_statuses">Всі статуси</option>
+              <option value="true" data-i18n="active_users">Активні</option>
+              <option value="false" data-i18n="inactive">Деактивовані</option>
             </select>
           </div>
 
@@ -137,13 +132,13 @@
             <table class="data-table" id="usersTable">
               <thead>
                 <tr>
-                  <th>Email</th>
-                  <th>Ім'я</th>
-                  <th>Роль</th>
-                  <th>Статус</th>
-                  <th>Реєстрація</th>
-                  <th>Скани</th>
-                  <th>Дії</th>
+                  <th data-i18n="email">Email</th>
+                  <th data-i18n="name">Ім'я</th>
+                  <th data-i18n="role">Роль</th>
+                  <th data-i18n="status">Статус</th>
+                  <th data-i18n="registration">Реєстрація</th>
+                  <th data-i18n="scans">Скани</th>
+                  <th data-i18n="actions">Дії</th>
                 </tr>
               </thead>
               <tbody></tbody>
@@ -152,22 +147,21 @@
           </div>
         </section>
 
-        
         <section id="sec-scans" class="admin-section" hidden>
           <header class="topbar">
             <div>
-              <p class="eyebrow">Браузер результатів</p>
-              <h1>Скани</h1>
+              <p class="eyebrow" data-i18n="results_browser">Браузер результатів</p>
+              <h1 data-i18n="scans">Скани</h1>
             </div>
           </header>
 
           <div class="filter-bar">
             <select id="scanLabelFilter" class="filter-select">
-              <option value="">Всі діагнози</option>
-              <option value="glioma">Glioma</option>
-              <option value="meningioma">Meningioma</option>
-              <option value="pituitary">Pituitary</option>
-              <option value="no_tumor">No tumor</option>
+              <option value="" data-i18n="all_diagnoses">Всі діагнози</option>
+              <option value="glioma" data-i18n="glioma">Гліома</option>
+              <option value="meningioma" data-i18n="meningioma">Менінгіома</option>
+              <option value="pituitary" data-i18n="pituitary">Гіпофіз</option>
+              <option value="no_tumor" data-i18n="no_tumor">Без пухлини</option>
             </select>
           </div>
 
@@ -175,13 +169,13 @@
             <table class="data-table" id="scansTable">
               <thead>
                 <tr>
-                  <th>Файл</th>
-                  <th>Користувач</th>
-                  <th>Діагноз</th>
-                  <th>Ризик</th>
-                  <th>Модель</th>
-                  <th>Дата</th>
-                  <th>Дії</th>
+                  <th data-i18n="file">Файл</th>
+                  <th data-i18n="user">Користувач</th>
+                  <th data-i18n="diagnosis">Діагноз</th>
+                  <th data-i18n="risk">Ризик</th>
+                  <th data-i18n="model">Модель</th>
+                  <th data-i18n="date">Дата</th>
+                  <th data-i18n="actions">Дії</th>
                 </tr>
               </thead>
               <tbody></tbody>
@@ -190,21 +184,20 @@
           </div>
         </section>
 
-        
         <section id="sec-audit" class="admin-section" hidden>
           <header class="topbar">
             <div>
-              <p class="eyebrow">Журнал дій</p>
-              <h1>Аудит-лог</h1>
+              <p class="eyebrow" data-i18n="action_journal">Журнал дій</p>
+              <h1 data-i18n="audit_log">Аудит-лог</h1>
             </div>
           </header>
 
           <div class="filter-bar">
             <select id="auditActionFilter" class="filter-select">
-              <option value="">Всі дії</option>
-              <option value="login">Login</option>
-              <option value="register">Register</option>
-              <option value="predict">Predict</option>
+              <option value="" data-i18n="all_actions">Всі дії</option>
+              <option value="login" data-i18n="login">Увійти</option>
+              <option value="register" data-i18n="register">Реєстрація</option>
+              <option value="predict" data-i18n="analyze">Аналізувати</option>
             </select>
           </div>
 
@@ -212,11 +205,11 @@
             <table class="data-table" id="auditTable">
               <thead>
                 <tr>
-                  <th>Час</th>
-                  <th>Користувач</th>
-                  <th>Дія</th>
+                  <th data-i18n="time">Час</th>
+                  <th data-i18n="user">Користувач</th>
+                  <th data-i18n="actions">Дія</th>
                   <th>IP</th>
-                  <th>Деталі</th>
+                  <th data-i18n="details">Деталі</th>
                 </tr>
               </thead>
               <tbody></tbody>
@@ -225,26 +218,25 @@
           </div>
         </section>
 
-        
         <section id="sec-model" class="admin-section" hidden>
           <header class="topbar">
             <div>
-              <p class="eyebrow">ML конфігурація</p>
-              <h1>Інформація про модель</h1>
+              <p class="eyebrow" data-i18n="ml_configuration">ML конфігурація</p>
+              <h1 data-i18n="model_information">Інформація про модель</h1>
             </div>
           </header>
 
           <div class="model-grid" id="modelInfoGrid">
             <div class="panel-card">
-              <h2>Загальна інформація</h2>
+              <h2 data-i18n="general_information">Загальна інформація</h2>
               <dl class="info-list" id="modelGeneralInfo"></dl>
             </div>
             <div class="panel-card">
-              <h2>Класи</h2>
+              <h2 data-i18n="classes">Класи</h2>
               <div id="modelClasses" class="model-classes"></div>
             </div>
             <div class="panel-card model-metrics-card">
-              <h2>Метрики</h2>
+              <h2 data-i18n="metrics">Метрики</h2>
               <div id="modelMetrics" class="model-metrics"></div>
             </div>
           </div>
@@ -252,17 +244,16 @@
       </main>
     </div>
 
-    
     <div id="scanModal" class="modal-overlay" hidden>
       <div class="modal-panel modal-wide">
         <button id="scanModalClose" class="modal-close" type="button">&times;</button>
-        <h2 id="scanModalTitle">Деталі скану</h2>
+        <h2 id="scanModalTitle" data-i18n="scan_details">Деталі скану</h2>
         <div id="scanModalContent" class="scan-detail-content"></div>
       </div>
     </div>
 
     <script src="src/i18n.js"></script>
-    <script src="src/admin.js?v=2.0.1"></script>
+    <script src="src/admin.js?v=2.0.2"></script>
     <script>initI18n();</script>
   </body>
 </html>

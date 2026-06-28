@@ -49,10 +49,10 @@ if (!localStorage.getItem("neuroscan-session")) {
 }
 
 const classes = [
-  ["glioma", "Glioma"],
-  ["meningioma", "Meningioma"],
-  ["pituitary", "Pituitary"],
-  ["healthy", "No tumor"],
+  ["glioma", "glioma"],
+  ["meningioma", "meningioma"],
+  ["pituitary", "pituitary"],
+  ["healthy", "no_tumor"],
 ];
 
 
@@ -150,7 +150,7 @@ loginForm.addEventListener("submit", async (e) => {
     });
     if (!res.ok) {
       const data = await res.json();
-      loginError.textContent = data.detail || "Помилка входу";
+      loginError.textContent = data.detail || t("login_error");
       loginError.hidden = false;
       return;
     }
@@ -165,7 +165,7 @@ loginForm.addEventListener("submit", async (e) => {
     closeModal();
     loadHistoryFromServer();
   } catch (err) {
-    loginError.textContent = "Не вдалося з'єднатися з сервером";
+    loginError.textContent = t("connection_error");
     loginError.hidden = false;
   }
 });
@@ -185,7 +185,7 @@ registerForm.addEventListener("submit", async (e) => {
     });
     if (!res.ok) {
       const data = await res.json();
-      registerError.textContent = data.detail || "Помилка реєстрації";
+      registerError.textContent = data.detail || t("register_error");
       registerError.hidden = false;
       return;
     }
@@ -200,7 +200,7 @@ registerForm.addEventListener("submit", async (e) => {
     closeModal();
     loadHistoryFromServer();
   } catch (err) {
-    registerError.textContent = "Не вдалося з'єднатися з сервером";
+    registerError.textContent = t("connection_error");
     registerError.hidden = false;
   }
 });
@@ -239,9 +239,9 @@ function drawEmptyState() {
   scanCtx.fillStyle = "#cbd5e1";
   scanCtx.font = "700 22px Arial";
   scanCtx.textAlign = "center";
-  scanCtx.fillText("МРТ-зображення", 260, 248);
+  scanCtx.fillText(t("mri_image"), 260, 248);
   scanCtx.font = "16px Arial";
-  scanCtx.fillText("завантажте файл для аналізу", 260, 278);
+  scanCtx.fillText(t("upload_file_for_analysis"), 260, 278);
   heatmapCtx.clearRect(0, 0, heatmapCanvas.width, heatmapCanvas.height);
   heatmapCtx.fillStyle = "#0c1117";
   heatmapCtx.fillRect(0, 0, heatmapCanvas.width, heatmapCanvas.height);
@@ -256,7 +256,7 @@ function updateActiveNav() {
 
 function updateResultSource(source) {
   if (!resultSource) return;
-  resultSource.textContent = `Джерело: ${source}`;
+  resultSource.textContent = `${t("source")}: ${source}`;
 }
 
 function setupNavigation() {
@@ -292,6 +292,7 @@ function loadImage(file) {
       state.imageRect = { x, y, w: drawWidth, h: drawHeight };
       state.lastResult = null;
       state.currentFile = file;
+      fileName.removeAttribute("data-i18n");
       fileName.textContent = file.name;
       clearHeatmap();
     };
@@ -350,12 +351,12 @@ async function canvasToFile() {
 
 function normalizeBackendResult(payload) {
   const labelMap = {
-    glioma: "Glioma",
-    meningioma: "Meningioma",
-    pituitary: "Pituitary",
-    notumor: "No tumor",
-    no_tumor: "No tumor",
-    "No tumor": "No tumor",
+    glioma: "glioma",
+    meningioma: "meningioma",
+    pituitary: "pituitary",
+    notumor: "no_tumor",
+    no_tumor: "no_tumor",
+    "No tumor": "no_tumor",
   };
   const probabilities = {
     glioma: payload.probabilities.glioma || 0,
@@ -452,12 +453,40 @@ function percentage(value) {
   return `${Math.round(value * 100)}%`;
 }
 
+function diagnosisKey(label) {
+  const map = {
+    glioma: "glioma",
+    meningioma: "meningioma",
+    pituitary: "pituitary",
+    healthy: "no_tumor",
+    notumor: "no_tumor",
+    no_tumor: "no_tumor",
+    "No tumor": "no_tumor",
+  };
+  return map[label] || label;
+}
+
+function translateDiagnosis(label) {
+  const key = diagnosisKey(label);
+  return ["glioma", "meningioma", "pituitary", "no_tumor"].includes(key) ? t(key) : label;
+}
+
+function updateDiagnosisLabels() {
+  document.querySelectorAll("[data-diagnosis-label]").forEach((element) => {
+    element.textContent = translateDiagnosis(element.dataset.diagnosisLabel);
+  });
+  if (state.lastResult) {
+    updateResults(state.lastResult, state.lastResult.features);
+  }
+  renderHistory();
+}
+
 function updateResults(result, features) {
-  document.querySelector("#diagnosisLabel").textContent = result.label;
+  document.querySelector("#diagnosisLabel").textContent = translateDiagnosis(result.label);
   document.querySelector("#riskValue").textContent = percentage(result.risk);
   document.querySelector("#riskBar").style.width = percentage(result.risk);
 
-  updateResultSource(result.source || "невідоме джерело");
+  updateResultSource(result.source || t("unknown_source"));
 
   classes.forEach(([key]) => {
     document.querySelector(`#${key}Value`).textContent = percentage(result.probabilities[key]);
@@ -492,7 +521,7 @@ function drawHeatmap(features) {
 
 async function analyze() {
   if (!state.currentFile) {
-    alert("Завантажте МРТ-зображення перед аналізом.");
+    alert(t("upload_mri_image"));
     return;
   }
 
@@ -503,7 +532,7 @@ async function analyze() {
     result = await predictWithBackend(features);
   } catch (error) {
     console.error(error);
-    alert("Не вдалося виконати аналіз. Перевірте, чи бекенд запущено та доступний.");
+    alert(t("analysis_failed"));
     return;
   }
 
@@ -511,7 +540,7 @@ async function analyze() {
     ...result,
     features,
     file: fileName.textContent,
-    date: new Date().toLocaleString("uk-UA"),
+    date: new Date().toLocaleString(getLocale()),
   };
 
   updateResults(result, features);
@@ -541,7 +570,8 @@ async function loadHistoryFromServer() {
         label: item.predicted_label,
         risk: item.risk_score,
         file: item.file_name,
-        date: new Date(item.created_at).toLocaleString("uk-UA"),
+        date: new Date(item.created_at).toLocaleString(getLocale()),
+        createdAt: item.created_at,
         probabilities: item.probabilities,
         features: item.image_features || {},
         notes: item.notes,
@@ -560,7 +590,7 @@ async function loadHistoryFromServer() {
 function renderHistory() {
   historyList.innerHTML = "";
   if (state.history.length === 0) {
-    historyList.innerHTML = '<p class="empty-history">Поки що немає виконаних аналізів.</p>';
+    historyList.innerHTML = `<p class="empty-history">${t("no_history")}</p>`;
     return;
   }
   state.history.forEach((entry) => {
@@ -569,9 +599,10 @@ function renderHistory() {
 
     const infoDiv = document.createElement("div");
     const titleEl = document.createElement("strong");
-    titleEl.textContent = entry.label;
+    titleEl.textContent = translateDiagnosis(entry.label);
     const metaEl = document.createElement("span");
-    metaEl.textContent = `${entry.file} · ${entry.date}`;
+    const localizedDate = entry.createdAt ? new Date(entry.createdAt).toLocaleString(getLocale()) : entry.date;
+    metaEl.textContent = `${entry.file} · ${localizedDate}`;
     infoDiv.appendChild(titleEl);
     infoDiv.appendChild(metaEl);
 
@@ -586,7 +617,7 @@ function renderHistory() {
       const editBtn = document.createElement("button");
       editBtn.className = "text-button edit-scan";
       editBtn.type = "button";
-      editBtn.title = "Редагувати назву скану";
+      editBtn.title = t("edit_scan_name");
       editBtn.textContent = "✎";
       editBtn.style.marginLeft = "8px";
       infoDiv.appendChild(editBtn);
@@ -613,10 +644,10 @@ function renderHistory() {
         actions.className = 'rename-actions';
         const saveBtn = document.createElement("button");
         saveBtn.className = "btn-small btn-save";
-        saveBtn.textContent = "Зберегти";
+        saveBtn.textContent = t("save");
         const cancelBtn = document.createElement("button");
         cancelBtn.className = "btn-small btn-cancel";
-        cancelBtn.textContent = "Скасувати";
+        cancelBtn.textContent = t("cancel");
 
         editBtn.hidden = true;
         infoDiv.replaceChild(form, metaEl);
@@ -635,7 +666,7 @@ function renderHistory() {
         saveBtn.addEventListener("click", async () => {
           const newBase = input.value.trim();
           if (!newBase) {
-            alert("Назва не може бути пустою");
+            alert(t("empty_name"));
             return;
           }
           const newName = newBase + ext;
@@ -648,14 +679,14 @@ function renderHistory() {
             });
             if (!res.ok) {
               const err = await res.json().catch(() => ({}));
-              alert(err.detail || "Не вдалося перейменувати скан");
+              alert(err.detail || t("rename_failed"));
               saveBtn.disabled = false;
               return;
             }
             entry.file = newName;
             renderHistory();
           } catch (e) {
-            alert("Помилка з'єднання з сервером");
+            alert(t("connection_error"));
             saveBtn.disabled = false;
           }
         });
@@ -687,7 +718,7 @@ function importHistoryFile(file) {
       try {
         const content = JSON.parse(reader.result);
         if (!Array.isArray(content)) {
-          throw new Error("Файл має містити масив об'єктів історії.");
+          throw new Error(t("history_file_error"));
         }
         const valid = content.filter((item) => item && item.date && item.file && item.label);
         state.history = valid.slice(0, 6);
@@ -698,7 +729,7 @@ function importHistoryFile(file) {
         reject(error);
       }
     };
-    reader.onerror = () => reject(new Error("Не вдалося прочитати файл."));
+    reader.onerror = () => reject(new Error(t("file_read_error")));
     reader.readAsText(file, "UTF-8");
   });
 }
@@ -710,25 +741,25 @@ async function exportReport() {
 
   const result = state.lastResult;
   const report = [
-    "NeuroScan AI - висновок аналізу МРТ",
-    `Дата: ${result.date}`,
-    `Файл: ${result.file}`,
-    `Попередній клас: ${result.label}`,
-    `Джерело прогнозу: ${result.source}`,
-    `Ризик патології: ${percentage(result.risk)}`,
+    t("report_title"),
+    `${t("report_date")}: ${result.date}`,
+    `${t("report_file")}: ${result.file}`,
+    `${t("report_predicted_class")}: ${translateDiagnosis(result.label)}`,
+    `${t("report_prediction_source")}: ${result.source}`,
+    `${t("report_pathology_risk")}: ${percentage(result.risk)}`,
     "",
-    "Ймовірності класів:",
-    `Glioma: ${percentage(result.probabilities.glioma)}`,
-    `Meningioma: ${percentage(result.probabilities.meningioma)}`,
-    `Pituitary: ${percentage(result.probabilities.pituitary)}`,
-    `No tumor: ${percentage(result.probabilities.healthy)}`,
+    `${t("report_class_probabilities")}:`,
+    `${t("glioma")}: ${percentage(result.probabilities.glioma)}`,
+    `${t("meningioma")}: ${percentage(result.probabilities.meningioma)}`,
+    `${t("pituitary")}: ${percentage(result.probabilities.pituitary)}`,
+    `${t("no_tumor")}: ${percentage(result.probabilities.healthy)}`,
     "",
-    "Ознаки зображення:",
-    `Контрастність: ${percentage(result.features.contrast)}`,
-    `Асиметрія: ${percentage(result.features.asymmetry)}`,
-    `Яскрава зона: ${percentage(result.features.hotspot)}`,
+    `${t("report_image_features")}:`,
+    `${t("contrast")}: ${percentage(result.features.contrast)}`,
+    `${t("asymmetry")}: ${percentage(result.features.asymmetry)}`,
+    `${t("bright_area")}: ${percentage(result.features.hotspot)}`,
     "",
-    "Примітка: результат є навчальним прототипом і не замінює медичний висновок лікаря.",
+    t("report_note"),
   ].join("\n");
 
   const blob = new Blob([report], { type: "text/plain;charset=utf-8" });
@@ -757,9 +788,9 @@ importHistoryInput.addEventListener("change", async (event) => {
   if (!file) return;
   try {
     await importHistoryFile(file);
-    alert("Історію імпортовано успішно.");
+    alert(t("history_imported"));
   } catch (error) {
-    alert(`Не вдалося імпортувати історію: ${error.message}`);
+    alert(formatI18n("history_import_failed", { message: error.message }));
   } finally {
     importHistoryInput.value = "";
   }
@@ -774,3 +805,13 @@ setupNavigation();
 drawEmptyState();
 fetchCurrentUser();
 loadHistoryFromServer();
+
+window.addEventListener("languagechange", () => {
+  if (!state.currentFile) {
+    drawEmptyState();
+  }
+  if (state.lastResult) {
+    updateResultSource(state.lastResult.source || t("unknown_source"));
+  }
+  updateDiagnosisLabels();
+});

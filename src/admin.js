@@ -1,4 +1,4 @@
-
+﻿
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -10,13 +10,18 @@ const DIAG_COLORS = {
   notumor: "#0f766e",
 };
 
-const DIAG_LABELS = {
-  glioma: "Glioma",
-  meningioma: "Meningioma",
-  pituitary: "Pituitary",
-  no_tumor: "No tumor",
-  notumor: "No tumor",
+const DIAG_KEYS = {
+  glioma: "glioma",
+  meningioma: "meningioma",
+  pituitary: "pituitary",
+  no_tumor: "no_tumor",
+  notumor: "no_tumor",
 };
+
+function getDiagLabel(label) {
+  const key = DIAG_KEYS[label] || label;
+  return DIAG_KEYS[label] ? t(key) : label;
+}
 
 const state = {
   token: localStorage.getItem("neuroscan-token") || null,
@@ -53,7 +58,7 @@ async function checkAuth() {
     state.user = await res.json();
 
     if (state.user.role !== "admin") {
-      alert("Доступ дозволено лише адміністраторам.");
+      alert(t("admin_only"));
       sections.forEach((s) => (s.hidden = true));
       return false;
     }
@@ -149,7 +154,7 @@ function drawScansChart(data) {
     ctx.fillStyle = "#65717f";
     ctx.font = "14px Arial";
     ctx.textAlign = "center";
-    ctx.fillText("Немає даних", w / 2, h / 2);
+    ctx.fillText(t("no_data"), w / 2, h / 2);
     return;
   }
 
@@ -219,7 +224,7 @@ function drawDiagChart(distribution) {
     ctx.fillStyle = "#65717f";
     ctx.font = "14px Arial";
     ctx.textAlign = "center";
-    ctx.fillText("Немає даних", cx, cy);
+    ctx.fillText(t("no_data"), cx, cy);
     return;
   }
 
@@ -249,7 +254,7 @@ function drawDiagChart(distribution) {
   ctx.fillText(total, cx, cy - 6);
   ctx.font = "12px Arial";
   ctx.fillStyle = "#65717f";
-  ctx.fillText("аналізів", cx, cy + 16);
+  ctx.fillText(t("analyses_count"), cx, cy + 16);
 
 
   const legend = document.getElementById("diagLegend");
@@ -259,7 +264,7 @@ function drawDiagChart(distribution) {
     legend.innerHTML += `
       <div class="diag-legend-item">
         <span class="diag-legend-dot" style="background:${DIAG_COLORS[label] || '#94a3b8'}"></span>
-        ${DIAG_LABELS[label] || label} (${pct}%)
+        ${getDiagLabel(label)} (${pct}%)
       </div>
     `;
   });
@@ -269,14 +274,14 @@ function renderRecentScans(scans) {
   const tbody = document.querySelector("#recentScansTable tbody");
   tbody.innerHTML = "";
   if (!scans.length) {
-    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--muted)">Немає даних</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="4" style="color:var(--muted)">${t("no_data")}</td></tr>`;
     return;
   }
   scans.forEach((s) => {
     tbody.innerHTML += `
       <tr>
         <td>${escHtml(s.file_name)}</td>
-        <td><span class="badge badge-${s.predicted_label}">${DIAG_LABELS[s.predicted_label] || s.predicted_label}</span></td>
+        <td><span class="badge badge-${s.predicted_label}">${getDiagLabel(s.predicted_label)}</span></td>
         <td>${Math.round(s.risk_score * 100)}%</td>
         <td>${formatDate(s.created_at)}</td>
       </tr>
@@ -310,20 +315,20 @@ async function loadUsers(page = 1) {
     data.items.forEach((u) => {
       const isSelf = state.user && u.id === state.user.id;
       const actionsHtml = isSelf ? `
-        <span style="color:var(--muted);font-size:12px;font-style:italic">Це ви (поточний сеанс)</span>
+        <span style="color:var(--muted);font-size:12px;font-style:italic">${t("current_session")}</span>
       ` : `
         <div class="table-actions">
-          <button class="btn-small" onclick="toggleUserRole('${u.id}','${u.role}')" title="Змінити роль">${u.role === "admin" ? "→user" : "→admin"}</button>
-          <button class="btn-small" onclick="toggleUserActive('${u.id}',${u.is_active})" title="${u.is_active ? "Деактивувати" : "Активувати"}">${u.is_active ? "Деакт." : "Актив."}</button>
-          <button class="btn-small btn-danger" onclick="deleteUser('${u.id}')" title="Видалити">✕</button>
+          <button class="btn-small" onclick="toggleUserRole('${u.id}','${u.role}')" title="${t("change_role")}">${u.role === "admin" ? "→user" : "→admin"}</button>
+          <button class="btn-small" onclick="toggleUserActive('${u.id}',${u.is_active})" title="${u.is_active ? t("deactivate") : t("activate")}">${u.is_active ? t("deactivate_short") : t("activate_short")}</button>
+          <button class="btn-small btn-danger" onclick="deleteUser('${u.id}')" title="${t("delete")}">✕</button>
         </div>
       `;
       tbody.innerHTML += `
         <tr>
           <td>${escHtml(u.email)}</td>
           <td>${escHtml(u.full_name || "—")}</td>
-          <td><span class="badge badge-${u.role}">${u.role}</span></td>
-          <td><span class="badge badge-${u.is_active ? "active" : "inactive"}">${u.is_active ? "Активний" : "Деактивований"}</span></td>
+          <td><span class="badge badge-${u.role}">${u.role === "admin" ? t("role_admin") : t("role_user")}</span></td>
+          <td><span class="badge badge-${u.is_active ? "active" : "inactive"}">${u.is_active ? t("active") : t("inactive")}</span></td>
           <td>${formatDate(u.created_at)}</td>
           <td>${u.scan_count}</td>
           <td>${actionsHtml}</td>
@@ -357,7 +362,7 @@ async function toggleUserActive(userId, isActive) {
 }
 
 async function deleteUser(userId) {
-  if (!confirm("Ви впевнені, що хочете видалити цього користувача?")) return;
+  if (!confirm(t("confirm_delete_user"))) return;
   await fetch(`${API_BASE}/admin/users/${userId}`, {
     method: "DELETE",
     headers: authHeadersRaw(),
@@ -392,14 +397,14 @@ async function loadScans(page = 1) {
       tbody.innerHTML += `
         <tr>
           <td>${escHtml(s.file_name)}</td>
-          <td>${escHtml(s.user_email || s.session_id?.slice(0, 8) || "анонім")}</td>
-          <td><span class="badge badge-${s.predicted_label}">${DIAG_LABELS[s.predicted_label] || s.predicted_label}</span></td>
+          <td>${escHtml(s.user_email || s.session_id?.slice(0, 8) || t("anonymous"))}</td>
+          <td><span class="badge badge-${s.predicted_label}">${getDiagLabel(s.predicted_label)}</span></td>
           <td>${Math.round(s.risk_score * 100)}%</td>
           <td>${escHtml(s.model_name)}</td>
           <td>${formatDate(s.created_at)}</td>
           <td>
             <div class="table-actions">
-              <button class="btn-small" onclick="viewScan('${s.id}')">Деталі</button>
+              <button class="btn-small" onclick="viewScan('${s.id}')">${t("view_details")}</button>
               <button class="btn-small btn-danger" onclick="deleteScan('${s.id}')">✕</button>
             </div>
           </td>
@@ -419,7 +424,7 @@ async function viewScan(scanId) {
     if (!res.ok) return;
     const s = await res.json();
 
-    document.getElementById("scanModalTitle").textContent = `Скан: ${s.file_name}`;
+    document.getElementById("scanModalTitle").textContent = `${t("scans")}: ${s.file_name}`;
 
     let probBars = "";
     if (s.probabilities) {
@@ -427,7 +432,7 @@ async function viewScan(scanId) {
         const pct = Math.round(prob * 100);
         probBars += `
           <div class="prob-row">
-            <span>${DIAG_LABELS[label] || label}</span>
+            <span>${getDiagLabel(label)}</span>
             <div class="prob-bar-track">
               <div class="prob-bar-fill" style="width:${pct}%;background:${DIAG_COLORS[label] || "#94a3b8"}"></div>
             </div>
@@ -448,19 +453,19 @@ async function viewScan(scanId) {
 
     document.getElementById("scanModalContent").innerHTML = `
       <dl>
-        <dt>Діагноз</dt><dd><span class="badge badge-${s.predicted_label}">${DIAG_LABELS[s.predicted_label] || s.predicted_label}</span></dd>
-        <dt>Ризик</dt><dd>${Math.round(s.risk_score * 100)}%</dd>
+        <dt>${t("diagnosis")}</dt><dd><span class="badge badge-${s.predicted_label}">${getDiagLabel(s.predicted_label)}</span></dd>
+        <dt>${t("risk")}</dt><dd>${Math.round(s.risk_score * 100)}%</dd>
         <dt>SHA256</dt><dd style="font-family:monospace;font-size:12px;word-break:break-all">${s.file_sha256}</dd>
-        <dt>Модель</dt><dd>${escHtml(s.model_name)} (${escHtml(s.model_architecture || "?")})</dd>
+        <dt>${t("model")}</dt><dd>${escHtml(s.model_name)} (${escHtml(s.model_architecture || "?")})</dd>
         <dt>Glioma margin</dt><dd>${s.glioma_margin ?? "—"}</dd>
         <dt>Grad-CAM</dt><dd>${s.gradcam_generated ? "✓" : "✗"}</dd>
-        <dt>Користувач</dt><dd>${escHtml(s.user_email || s.session_id || "анонім")}</dd>
-        <dt>Дата</dt><dd>${formatDate(s.created_at)}</dd>
-        <dt>Нотатки</dt><dd>${escHtml(s.notes || "—")}</dd>
+        <dt>${t("user")}</dt><dd>${escHtml(s.user_email || s.session_id || t("anonymous"))}</dd>
+        <dt>${t("date")}</dt><dd>${formatDate(s.created_at)}</dd>
+        <dt>${t("notes")}</dt><dd>${escHtml(s.notes || "—")}</dd>
       </dl>
-      <h3 style="margin:8px 0 4px;font-size:15px">Ймовірності</h3>
+      <h3 style="margin:8px 0 4px;font-size:15px">${t("probabilities")}</h3>
       <div class="prob-bars">${probBars}</div>
-      ${imagesHtml ? `<h3 style="margin:8px 0 4px;font-size:15px">Зображення</h3>${imagesHtml}` : ""}
+      ${imagesHtml ? `<h3 style="margin:8px 0 4px;font-size:15px">${t("images")}</h3>${imagesHtml}` : ""}
     `;
 
     document.getElementById("scanModal").hidden = false;
@@ -470,7 +475,7 @@ async function viewScan(scanId) {
 }
 
 async function deleteScan(scanId) {
-  if (!confirm("Видалити цей скан?")) return;
+  if (!confirm(t("confirm_delete_scan"))) return;
   await fetch(`${API_BASE}/admin/scans/${scanId}`, {
     method: "DELETE",
     headers: authHeadersRaw(),
@@ -507,7 +512,7 @@ async function loadAudit(page = 1) {
       tbody.innerHTML += `
         <tr>
           <td>${formatDate(e.created_at)}</td>
-          <td>${escHtml(e.user_email || "анонім")}</td>
+          <td>${escHtml(e.user_email || t("anonymous"))}</td>
           <td><span class="badge badge-user">${e.action}</span></td>
           <td>${escHtml(e.ip_address || "—")}</td>
           <td style="font-size:12px;color:var(--muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escHtml(JSON.stringify(e.details || ''))}">${escHtml(detailsStr)}</td>
@@ -532,11 +537,11 @@ async function loadModelInfo() {
     const infoEl = document.getElementById("modelGeneralInfo");
     const sizeMB = data.file_size_bytes ? (data.file_size_bytes / 1024 / 1024).toFixed(1) : "—";
     infoEl.innerHTML = `
-      <dt>Модель</dt><dd>${escHtml(data.model_name)}</dd>
-      <dt>Архітектура</dt><dd>${escHtml(data.architecture || "—")}</dd>
-      <dt>Розмір зображення</dt><dd>${data.image_size || "—"}px</dd>
+      <dt>${t("model")}</dt><dd>${escHtml(data.model_name)}</dd>
+      <dt>${t("architecture")}</dt><dd>${escHtml(data.architecture || "—")}</dd>
+      <dt>${t("image_size")}</dt><dd>${data.image_size || "—"}px</dd>
       <dt>Glioma margin</dt><dd>${data.glioma_margin}</dd>
-      <dt>Розмір файлу</dt><dd>${sizeMB} MB</dd>
+      <dt>${t("file_size")}</dt><dd>${sizeMB} MB</dd>
     `;
 
     const classesEl = document.getElementById("modelClasses");
@@ -623,7 +628,7 @@ function renderPagination(containerId, total, page, perPage, loadFn) {
 
 function formatDate(isoStr) {
   try {
-    return new Date(isoStr).toLocaleString("uk-UA", {
+    return new Date(isoStr).toLocaleString(getLocale(), {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -649,6 +654,16 @@ function debounce(fn, delay) {
   };
 }
 
+function refreshCurrentSection() {
+  switch (state.currentSection) {
+    case "dashboard": loadDashboard(); break;
+    case "users": loadUsers(usersPage); break;
+    case "scans": loadScans(scansPage); break;
+    case "audit": loadAudit(auditPage); break;
+    case "model": loadModelInfo(); break;
+  }
+}
+
 
 
 
@@ -659,3 +674,5 @@ function debounce(fn, delay) {
     navigateTo(hash);
   }
 })();
+
+window.addEventListener("languagechange", refreshCurrentSection);

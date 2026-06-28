@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NeuroScan AI | Адмін-панель</title>
-    <meta name="description" content="Адміністративна панель системи NeuroScan AI для управління користувачами, сканами та аудиту." />
+    <title>NeuroScan AI | Admin Panel</title>
+    <meta name="description" content="Administrative panel of NeuroScan AI system for user management, scans and audit." />
     <link rel="stylesheet" href="src/styles.css?v=2.0.1" />
     <link rel="stylesheet" href="src/admin.css?v=2.0.1" />
   </head>
@@ -15,17 +15,22 @@
           <div class="brand-mark">NS</div>
           <div>
             <strong>NeuroScan AI</strong>
-            <span>Адмін-панель</span>
+            <span>Admin Panel</span>
           </div>
         </div>
 
         <nav class="nav" id="adminNav">
           <a class="active" href="#dashboard" data-section="dashboard">Dashboard</a>
-          <a href="#users" data-section="users">Користувачі</a>
-          <a href="#scans" data-section="scans">Скани</a>
-          <a href="#audit" data-section="audit">Аудит-лог</a>
-          <a href="#model" data-section="model">Модель</a>
+          <a href="#users" data-section="users">Users</a>
+          <a href="#scans" data-section="scans">Scans</a>
+          <a href="#audit" data-section="audit">Audit Log</a>
+          <a href="#model" data-section="model">Model</a>
         </nav>
+
+        <div class="language-switcher">
+          <button class="text-button" onclick="setLanguage('en')" id="lang-en">EN</button>
+          <button class="text-button" onclick="setLanguage('uk')" id="lang-uk">UK</button>
+        </div>
 
         <div class="auth-section">
           <div id="authUser" class="auth-user">
@@ -34,14 +39,14 @@
               <strong id="userDisplayName">Admin</strong>
               <span id="userEmail">admin@neuroscan.ai</span>
             </div>
-            <button id="logoutBtn" class="text-button" type="button">Вийти</button>
+            <button id="logoutBtn" class="text-button" type="button">Logout</button>
           </div>
         </div>
 
         <section class="side-panel">
-          <span class="panel-label">Система</span>
+          <span class="panel-label">System</span>
           <strong>NeuroScan AI Admin</strong>
-          <p>Панель керування та моніторингу аналізів МРТ.</p>
+          <p>Management and monitoring panel for MRI analysis.</p>
         </section>
       </aside>
 
@@ -256,6 +261,8 @@
       </div>
     </div>
 
+    <script src="src/i18n.js"></script>
     <script src="src/admin.js?v=2.0.1"></script>
+    <script>initI18n();</script>
   </body>
 </html>

@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeuroScan AI | Діагностика пухлин мозку за МРТ</title>
+  <title>NeuroScan AI | Brain Tumor Diagnosis by MRI</title>
   <meta name="description"
-    content="Програмна система для аналізу МРТ-зображень головного мозку з використанням ШІ та нейромережі ResNet18." />
+    content="Software system for analyzing brain MRI images using AI and ResNet18 neural network." />
   <link rel="stylesheet" href="src/styles.css?v=2.0.1" />
 </head>
 
@@ -22,32 +22,37 @@
       </div>
 
       <nav class="nav">
-        <a class="active" href="#diagnostics">Діагностика</a>
-        <a href="#results">Результати</a>
-        <a href="#history">Історія</a>
+        <a class="active" href="#diagnostics">Diagnostics</a>
+        <a href="#results">Results</a>
+        <a href="#history">History</a>
       </nav>
+
+      <div class="language-switcher">
+        <button class="text-button" onclick="setLanguage('en')" id="lang-en">EN</button>
+        <button class="text-button" onclick="setLanguage('uk')" id="lang-uk">UK</button>
+      </div>
 
 
       <div id="authSection" class="auth-section">
         <div id="authGuest" class="auth-guest">
-          <button id="loginBtn" class="action-button wide" type="button">Увійти</button>
-          <button id="registerBtn" class="text-button wide" type="button">Реєстрація</button>
+          <button id="loginBtn" class="action-button wide" type="button">Login</button>
+          <button id="registerBtn" class="text-button wide" type="button">Register</button>
         </div>
         <div id="authUser" class="auth-user" hidden>
           <div class="user-avatar" id="userAvatar">U</div>
           <div class="user-info">
-            <strong id="userDisplayName">Користувач</strong>
+            <strong id="userDisplayName">User</strong>
             <span id="userEmail">user@example.com</span>
             
           </div>
-          <button id="logoutBtn" class="text-button" type="button" onclick="appLogout()">Вийти</button>
+          <button id="logoutBtn" class="text-button" type="button" onclick="appLogout()">Logout</button>
         </div>
       </div>
 
       <section class="side-panel">
-        <span class="panel-label">Модель</span>
+        <span class="panel-label">Model</span>
         <strong>ResNet18 MRI Classifier</strong>
-        <p>Навчальний прототип для попередньої оцінки МРТ-зображень.</p>
+        <p>Educational prototype for preliminary assessment of MRI images.</p>
       </section>
     </aside>
 
@@ -207,7 +212,9 @@
     </div>
   </div>
 
+  <script src="src/i18n.js"></script>
   <script src="src/app.js?v=2.0.2"></script>
+  <script>initI18n();</script>
 </body>
 
 </html>

@@ -679,3 +679,37 @@ figcaption {
     flex: 1 1 150px;
   }
 }
+
+/* Language Switcher */
+.language-switcher {
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 8px 0;
+}
+
+.language-switcher .text-button {
+  flex: 1;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #b8c4d1;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease;
+  min-height: 32px;
+}
+
+.language-switcher .text-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.language-switcher .text-button.active {
+  background: var(--teal);
+  color: #ffffff;
+}

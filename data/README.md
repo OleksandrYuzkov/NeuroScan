@@ -1,6 +1,6 @@
-Датасет: https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset/data
+Dataset: https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset/data
 
-Розпакуйте дані в папку `data/brain_mri` у такій структурі:
+Extract the data into the `data/brain_mri` folder with the following structure:
 
 ```text
 data/
@@ -17,11 +17,11 @@ data/
       no_tumor/
 ```
 
-Назви папок використовуються як імена класів моделі:
+Folder names are used as model class names:
 
 - `glioma`
 - `meningioma`
 - `pituitary`
 - `no_tumor`
 
-Після підготовки даних запустіть `notebooks/train_and_visualize.ipynb`.
+After preparing the data, run `notebooks/train_and_visualize.ipynb`.
